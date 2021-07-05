@@ -1,3 +1,4 @@
+from home.adap194567.FSND.projects.capstone.starter.database.models import db_drop_and_create_all
 import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -6,7 +7,12 @@ from flask_cors import CORS
 def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__)
-  CORS(app)
+  #CORS(app)
+  setup_db(app)
+
+  db_drop_and_create_all
+
+  CORS(app, resources={r"/*": {"origins": "*"}})
 
   return app
 
