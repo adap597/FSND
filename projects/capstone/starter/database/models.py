@@ -18,23 +18,23 @@ def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
+    migrate = Migrate(app, db)
 
 def db_drop_and_create_all():
     db.drop_all()
     db.create_all()
 
 class Movie(db.model):
-    __tablename__='Movies'
+    __tablename__='movies'
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), nullable=False)
-    release_date = db.Column(Integer, nullable=False)
-    cast = db.relationship('Actor', backref='Movies', lazy=True)
+    release_date = db.Column(DateTime, nullable=False)
+    cast = db.relationship('Actor', backref='movie', lazy=True)
 
-    def __init__ (self, title, release_date, cast):
+    def __init__ (self, title, release_date):
         self.title = title 
         self.release_date = release_date
-        self.cast = cast
 
     def insert(self):
         db.session.add(self)
@@ -47,19 +47,25 @@ class Movie(db.model):
     def update(self):
         db.session.commit()
 
-    def __repr__(self):
-        return '<Movie {} {} {} />'.format(self.title, self.release_date, self.cast)
+    def format(self):
+        return{
+            'id': self.id,
+            'title': self.title,
+            'release_date': 'self.release_date'
+            
+        }
+
     
 
 
 class Actor(db.model):
-    __tablename__ = 'Actors'
+    __tablename__ = 'actors'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(256), nullable=False)
     age = Column(Integer, nullable=False)
     gender = Column(String(120), nullable=False)
-    cast = db.relationship('Cast', backref='Actor', lazy=True)
+    cast = db.relationship('Cast', backref='actor', lazy=True)
 
     def __init__(self, name, age, gender):
         self.name = name
