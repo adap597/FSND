@@ -7,8 +7,8 @@ from urllib.request import urlopen
 
 AUTH0_DOMAIN = 'udacfsnd.us.auth0.com'
 ALGORITHMS = ['RS256']
-API_AUDIENCE = 'Capstone'
-CLIENT_ID = ''
+API_AUDIENCE = 'Casting Service'
+CLIENT_ID = 'nBEglxlDSNtkW33pVuNyFYpXhPdz6PzG'
 
 class AuthError(Exception):
     def __init__(self, error, status_code):
