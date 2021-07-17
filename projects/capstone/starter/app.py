@@ -119,8 +119,8 @@ def create_app(test_config=None):
 
   # Delete Actor
   
-  @app.route('actor/<int:id>', methods=['DELETE'])
-  @requires_auth('delete:actor')
+  @app.route('actors/<int:id>', methods=['DELETE'])
+  @requires_auth('delete:actors')
   def delete_actor(payload, id):
     
     actor = Actor.query.filter(Actor.id == id).one_or_none()
@@ -139,7 +139,7 @@ def create_app(test_config=None):
   # Add movie
 
   @app.route('/movies', methods=['POST'])
-  @requires_auth("post:movie")
+  @requires_auth("post:movies")
   def add_movie(payload):
     body = request.get_json()
 
