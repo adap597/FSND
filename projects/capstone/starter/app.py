@@ -35,6 +35,7 @@ def create_app(test_config=None):
    # Get list of actors 
 
   @app.route('/actors', methods=['GET'])
+  @requires_auth('get:actors')
   def retrieve_actors():
     actors = Actor.query.all()
 
@@ -49,6 +50,7 @@ def create_app(test_config=None):
   # Get list of movies
 
   @app.route('/movies', methods=['GET'])
+  @requires_auth('get:movies')
   def retrieve_movies():
     movies = Movie.query.all()
 
