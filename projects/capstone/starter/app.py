@@ -5,8 +5,8 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import exc
 import json
 from flask_cors import CORS
-from .database.models import db_drop_and_create_all, setup_db, Actor, Movie, Cast
-from .auth.auth import AuthError, requires_auth
+from models import setup_db, Actor, Movie, Cast
+from auth import AuthError, requires_auth
 
 def create_app(test_config=None):
   # create and configure the app
@@ -14,9 +14,7 @@ def create_app(test_config=None):
   #CORS(app)
   setup_db(app)
 
-  db_drop_and_create_all
-
-  CORS(app, resources={r"/*": {"origins": "*"}})
+  CORS(app)
 
   @app.after_request
   def after_request(response):
@@ -121,7 +119,7 @@ def create_app(test_config=None):
 
   # Delete Actor
   
-  @app.route('actors/<int:id>', methods=['DELETE'])
+  @app.route('/actors/<int:id>', methods=['DELETE'])
   @requires_auth('delete:actors')
   def delete_actor(payload, id):
     

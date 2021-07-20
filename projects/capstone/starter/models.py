@@ -10,7 +10,7 @@ from flask_migrate import Migrate
 database_filename = "Casting.db"
 project_dir = os.path.dirname(os.path.abspath(__file__))
 database_path = "postgres://{}/{}".format('localhost:5432', database_filename)
-database_path = os.environ['DATABASE_URL']
+#database_path = os.environ['DATABASE_URL']
 db = SQLAlchemy()
 
 '''
@@ -28,7 +28,7 @@ def db_drop_and_create_all():
     db.drop_all()
     db.create_all()
 
-class Movie(db.model):
+class Movie(db.Model):
     __tablename__='movies'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -65,7 +65,7 @@ class Movie(db.model):
     
 
 
-class Actor(db.model):
+class Actor(db.Model):
     __tablename__ = 'actors'
 
     id = Column(Integer, primary_key=True)
@@ -94,7 +94,7 @@ class Actor(db.model):
         db.session.commit()
 
 
-class Cast(db.model):
+class Cast(db.Model):
     __tablename__= 'cast'
 
     id = db.Column(db.Integer, primary_key=True)
