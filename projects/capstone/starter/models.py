@@ -1,5 +1,5 @@
 import os
-from sqlalchemy import Column, String, Integer, create_engine, DateTime
+from sqlalchemy import Column, String, Integer, create_engine, DateTime, ForeignKey
 from flask_sqlalchemy import SQLAlchemy
 import json
 import dateutil.parser
@@ -7,10 +7,9 @@ import sys
 from flask_migrate import Migrate
 
 
-database_filename = "Casting.db"
+database_filename = "Casting"
 project_dir = os.path.dirname(os.path.abspath(__file__))
-database_path = "postgres://{}/{}".format('localhost:5432', database_filename)
-#database_path = os.environ['DATABASE_URL']
+database_path = "postgresql:///{}".format(database_filename)
 db = SQLAlchemy()
 
 '''
@@ -34,7 +33,7 @@ class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), nullable=False)
     release_date = db.Column(DateTime, nullable=False)
-    cast = db.relationship('Actor', backref='movie', lazy=True)
+    actors = db.relationship('Actor', backref='movie', lazy=True)
 
     def __repr__(self):
         return f"<Movie id = '{self.id}' title='{self.title}'>"
@@ -72,7 +71,7 @@ class Actor(db.Model):
     name = Column(String(256), nullable=False)
     age = Column(Integer, nullable=False)
     gender = Column(String(120), nullable=False)
-    cast = db.relationship('Cast', backref='actor', lazy=True)
+    movie_id = Column(Integer, ForeignKey('movies.id'), nullable=True)
 
     def __repr__(self):
         return f"<Actor id = '{self.id}' name='{self.name}'>"
@@ -94,14 +93,5 @@ class Actor(db.Model):
         db.session.commit()
 
 
-class Cast(db.Model):
-    __tablename__= 'cast'
-
-    id = db.Column(db.Integer, primary_key=True)
-    actor_id=db.Column(db.Integer, db.ForeignKey('Actor.id'), nullable=False)
-    movie_id=db.Column(db.Integer, db.ForeignKey('Movie.id'), nullable=False)
-
-    def __repr__(self):
-        return f'<Cast {self.id}, Actor {self.actor_id}, Movie {self.movie_id}>'
 
 
